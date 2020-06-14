@@ -1,0 +1,49 @@
+POST http://localhost:3000/offerup/settings
+Content-Type: application/json
+
+{
+    "query": "ps4",
+    "delievery": "p",
+    "price_min": "199",
+    "price_max": "202",
+    "radius": "5"
+}
+
+
+###
+GET http://localhost:3000/offerup/settings
+Content-Type: application/json
+
+###
+POST http://localhost:3000/offerup/extract
+
+
+###
+GET http://localhost:3000/offerup/blacklist
+
+###
+POST http://localhost:3000/offerup/blacklist/clear
+
+###
+DELETE http://localhost:3000/offerup/blacklist/123
+
+
+###
+GET http://localhost:3000/offerup/data
+
+
+### 
+POST http://localhost:3000/offerup/start-job
+
+
+### 
+POST http://localhost:3000/offerup/end-job
+
+
+### 
+POST http://localhost:3000/offerup/expo-token
+Content-Type: application/json
+
+{
+    "token": "hahaha"
+}
