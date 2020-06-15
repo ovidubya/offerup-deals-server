@@ -19,6 +19,10 @@ export const run = async (offerupRequest: OfferupSettings) => {
   const page = await context.newPage();
 
   console.log(getUrl(offerupRequest));
+  await page.goto("https://www.google.com");
+  await page.screenshot({
+    path: path.join(__dirname, "../../public/google.png"),
+  });
   await page.goto(getUrl(offerupRequest));
 
   if (offerupRequest.delievery === "p") {
@@ -31,6 +35,15 @@ export const run = async (offerupRequest: OfferupSettings) => {
     await page.reload();
     await page.screenshot({
       path: path.join(__dirname, "../../public/screenshot.png"),
+    });
+  } else if (offerupRequest.delievery === "s") {
+    await page.screenshot({
+      path: path.join(__dirname, "../../public/screenshot_before.png"),
+    });
+    await page.reload();
+    await pause(3000);
+    await page.screenshot({
+      path: path.join(__dirname, "../../public/screenshot_after.png"),
     });
   }
   const feedItems = await page.evaluate(

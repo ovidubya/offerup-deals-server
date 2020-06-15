@@ -16,36 +16,25 @@ export const cronJob = async () => {
     let settingsJSON: OfferupSettings = JSON.parse(settings);
     run(settingsJSON).then(async (feedItems: OfferupType[]) => {
       let cleanedItems: Item[] = clean(feedItems, settingsJSON.query);
-      let currentItems: Item[] = [];
 
       try {
-        currentItems = JSON.parse(
-          await fs.readFile(path.join(__dirname, "data.json"), "utf8")
-        );
-
-        cleanedItems.forEach((item) => {
-          if (!currentItems.find((currentItem) => currentItem.id === item.id)) {
-            currentItems.push(item);
-          }
-        });
         await fs.writeFile(
           path.join(__dirname, "data.json"),
-          JSON.stringify(currentItems, null, 2),
+          JSON.stringify(cleanedItems, null, 2),
           "utf8"
         );
 
-        let blackList: Array<number> = [],
-          data: Item[];
+        let blackList: Array<number> = [];
 
         try {
           blackList = JSON.parse(
             await fs.readFile(path.join(__dirname, "blacklist.json"), "utf8")
           );
-          currentItems = currentItems.filter((item) => {
+          cleanedItems = cleanedItems.filter((item) => {
             return !blackList.includes(item.id);
           });
 
-          if (currentItems.length !== 0) {
+          if (cleanedItems.length !== 0) {
             let expoToken;
             try {
               expoToken = JSON.parse(
@@ -71,7 +60,7 @@ export const cronJob = async () => {
                     body: JSON.stringify(message),
                   }
                 );
-                console.log(response);
+                console.log("sent a token message", new Date().toISOString());
               } catch (e) {
                 console.log(e);
                 console.log("unable to call expo server");

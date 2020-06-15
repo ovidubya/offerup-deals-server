@@ -146,21 +146,11 @@ Router.post("/extract", async (req, res) => {
     let settingsJSON: OfferupSettings = JSON.parse(settings);
     run(settingsJSON).then(async (feedItems: OfferupType[]) => {
       let cleanedItems: Item[] = clean(feedItems, settingsJSON.query);
-      let currentItems: Item[] = [];
 
       try {
-        currentItems = JSON.parse(
-          await fs.readFile(path.join(__dirname, "data.json"), "utf8")
-        );
-
-        cleanedItems.forEach((item) => {
-          if (!currentItems.find((currentItem) => currentItem.id === item.id)) {
-            currentItems.push(item);
-          }
-        });
         await fs.writeFile(
           path.join(__dirname, "data.json"),
-          JSON.stringify(currentItems, null, 2),
+          JSON.stringify(cleanedItems, null, 2),
           "utf8"
         );
         res.send({
