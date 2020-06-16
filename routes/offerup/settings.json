@@ -1,9 +1,0 @@
-{
-  "query": "ps4",
-  "delievery": "p",
-  "price_min": "150",
-  "price_max": "210",
-  "radius": "5",
-  "yearMin": "2020",
-  "zipCode": "60645"
-}
