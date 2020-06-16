@@ -11,13 +11,19 @@ $ npm i
 Or build a docker image
 
 ```sh
-$ docker build .
+$ sudo docker build -t offerupserver:latest .
 ```
 
 # Run server
 
 ```sh
 $ npm start
+```
+
+# Run docker container
+
+```sh
+$ docker container run -p 3000:3000 --name offerup_server_container offerupserver
 ```
 
 # Example Rest Calls
