@@ -8,7 +8,13 @@ export const applyJobsRoute = (Router: Router) => {
 
   let JOB_STATUS = false;
 
-  const job = new cron.CronJob(MINUTE, cronJob, null, true, "America/Resolute");
+  const job = new cron.CronJob(
+    MINUTE_15,
+    cronJob,
+    null,
+    true,
+    "America/Resolute"
+  );
   job.stop();
 
   Router.post("/start-job", async (req, res) => {
