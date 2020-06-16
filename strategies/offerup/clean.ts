@@ -1,5 +1,5 @@
-import * as arraySort from "array-sort";
-import { OfferupType } from "../../types/offerup";
+import arraySort from "array-sort";
+import { OfferupType, OfferupSettings } from "../../types/offerup";
 
 export class Owner {
   constructor(
@@ -26,12 +26,23 @@ export class Item {
   ) {}
 }
 
-export const clean = (data: OfferupType[], query: string): Item[] => {
+export const clean = (
+  data: OfferupType[],
+  settings: OfferupSettings
+): Item[] => {
   let cleanData = [];
 
   data = data.filter((el) => {
-    return el?.item?.title?.toLowerCase().includes(query);
+    return el?.item?.title?.toLowerCase().includes(settings.query);
   });
+
+  if (settings?.yearMin) {
+    data = data.filter((el) => {
+      return (
+        new Date(el.item.post_date).getFullYear() >= Number(settings.yearMin)
+      );
+    });
+  }
 
   data.forEach((el) => {
     cleanData.push(

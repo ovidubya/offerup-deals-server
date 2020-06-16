@@ -12,38 +12,44 @@ export const pause = (timeout: number) => {
   });
 };
 
-export const run = async (offerupRequest: OfferupSettings) => {
+export const run = async (settings: OfferupSettings) => {
   const browserType = "webkit";
   const browser = await playwright[browserType].launch();
   const context = await browser.newContext();
   const page = await context.newPage();
 
-  console.log(getUrl(offerupRequest));
+  console.log(getUrl(settings));
   await page.goto("https://www.google.com");
   await page.screenshot({
-    path: path.join(__dirname, "../../public/google.png"),
+    path: path.join(process.cwd(), "public/google.png"),
   });
-  await page.goto(getUrl(offerupRequest));
+  await page.goto(getUrl(settings));
 
-  if (offerupRequest.delievery === "p") {
+  if (settings.delievery === "p") {
+    await page.screenshot({
+      path: path.join(process.cwd(), "public/screenshot_before.png"),
+    });
     await page.waitForSelector("input[value=Nearby]", { state: "attached" });
-    await page.fill("input[value=Nearby]", "60645");
+    await page.fill(
+      "input[value=Nearby]",
+      !!settings.zipCode ? settings.zipCode : "60645"
+    );
     console.log("pausing...");
     await pause(3000);
     await page.click(".dropdown-menu-item:nth-child(2)");
     await pause(3000);
     await page.reload();
     await page.screenshot({
-      path: path.join(__dirname, "../../public/screenshot.png"),
+      path: path.join(process.cwd(), "public/screenshot_after.png"),
     });
-  } else if (offerupRequest.delievery === "s") {
+  } else if (settings.delievery === "s") {
     await page.screenshot({
-      path: path.join(__dirname, "../../public/screenshot_before.png"),
+      path: path.join(process.cwd(), "public/screenshot_before.png"),
     });
     await page.reload();
     await pause(3000);
     await page.screenshot({
-      path: path.join(__dirname, "../../public/screenshot_after.png"),
+      path: path.join(process.cwd(), "public/screenshot_after.png"),
     });
   }
   const feedItems = await page.evaluate(

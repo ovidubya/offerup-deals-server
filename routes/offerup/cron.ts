@@ -2,7 +2,7 @@ import * as fs from "promise-fs";
 import * as path from "path";
 import { run, clean, Item } from "../../strategies/offerup";
 import { OfferupType, OfferupSettings } from "../../types/offerup";
-import * as fetch from "node-fetch";
+import fetch from "node-fetch";
 
 export const cronJob = async () => {
   let settings;
@@ -15,7 +15,7 @@ export const cronJob = async () => {
   if (settings) {
     let settingsJSON: OfferupSettings = JSON.parse(settings);
     run(settingsJSON).then(async (feedItems: OfferupType[]) => {
-      let cleanedItems: Item[] = clean(feedItems, settingsJSON.query);
+      let cleanedItems: Item[] = clean(feedItems, settingsJSON);
 
       try {
         await fs.writeFile(

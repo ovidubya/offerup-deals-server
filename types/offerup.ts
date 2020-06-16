@@ -10,6 +10,8 @@ export type OfferupSettings = {
   price_min: string;
   price_max: string;
   radius?: "5" | "10" | "20" | "30";
+  zipCode?: string;
+  yearMin?: string;
 };
 
 export interface Item {
